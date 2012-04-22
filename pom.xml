@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+
+<!--         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		This is a sample Maven configuration for Wowza Media Server
+		provided by http://wmspanel.com team. We use similar approach 
+		during development our components for Wowza.
+		Please contact us (sales@wmspanel.com) if you want to have full featured cross-platform 
+		installer for Wowza Media Server.
+		Created and provided by Alex Pokotilo
+	     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-->
+
+
+
+
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>WowzaWithMavenIntegration</groupId>
+	<artifactId>WowzaProjectTemplate</artifactId>
+	<version>1.0</version>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>com.wms</groupId>
+			<artifactId>wms-server</artifactId>
+			<version>${wms.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.wms</groupId>
+			<artifactId>wms-stream-publish</artifactId>
+			<version>${wms.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>1.6</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+	<plugins>
+            <!-- lets force java 1.6 version for this project -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.2</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <includeScope>runtime</includeScope>
+                            <outputDirectory>${project.build.directory}/${libFolderName}</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <!-- build jar and add main class delaration to metafile -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.1</version>
+                <configuration>
+                    <finalName>${project.artifactId}</finalName>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>${libFolderName}/</classpathPrefix>
+                        </manifest>
+                        <manifestEntries>
+                        </manifestEntries>
+			<addMavenDescriptor>false</addMavenDescriptor>
+                    </archive>
+                </configuration>
+            </plugin>
+
+	    <plugin>
+        	<artifactId>maven-antrun-plugin</artifactId>
+        	<executions>
+          	<execution>
+            	<phase>package</phase>
+            	<configuration>
+              		<tasks>
+				<copy file="${project.build.directory}/${project.artifactId}.jar" tofile="${env.WMSINSTALL_HOME}/lib/${project.artifactId}.jar" overwrite="true"/>
+
+				<copy todir="${env.WMSINSTALL_HOME}/lib/${libFolderName}"  overwrite="true">
+					<fileset dir="${project.build.directory}/${libFolderName}" includes="**"/>
+				</copy>
+
+              		</tasks>
+            	</configuration>
+        	<goals>
+	              <goal>run</goal>
+            	</goals>
+          	</execution>
+        	</executions>
+      	    </plugin>
+
+            <!-- lets execute our project exec:java goal -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2</version>
+                <configuration>
+                </configuration>
+            </plugin>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<version>2.3.1</version>
+				<executions>
+					<execution>
+						<id>Install Wmsserver</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+						<configuration>
+							<packaging>jar</packaging>
+							<groupId>com.wms</groupId>
+							<artifactId>wms-server</artifactId>
+							<version>${wms.version}</version>
+							<file>${basedir}/lib/wms-server.jar</file>
+						</configuration>
+					</execution>
+					<execution>
+						<id>Install Wmsserver stream-publish library</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+						<configuration>
+							<packaging>jar</packaging>
+							<groupId>com.wms</groupId>
+							<artifactId>wms-stream-publish</artifactId>
+							<version>${wms.version}</version>
+							<file>${basedir}/lib/wms-stream-publish.jar</file>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+        </plugins>
+	</build>
+
+    <properties>
+		<wms.version>2.0.1</wms.version>
+		<libFolderName>dep-libs</libFolderName>
+    </properties>
+
+    
+</project>
