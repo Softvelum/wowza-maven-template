@@ -15,7 +15,7 @@ When we started working on Wowza agent for WMSPanel we found that Wowza IDE is v
 
 4. You cannot control jar manifest produced by IDE. If you need your jar to have some additional attributes you should use Maven. Wowza IDE cannot help you here.
 
-This is why it as decided to make Maven template.
+This is why it as decided to make Maven template. Original creator is Alex Pokotilo.
 
 More details to come soon.
 Meanwhile you can find more details here: http://wmsauth.blogspot.com/2011/10/maven-template-for-wowza.html
