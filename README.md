@@ -1,7 +1,9 @@
 Wowza Maven Template
 ====================
 
-This is a Maven template for Wowza Media Server projects.
+**Overview**
+
+This is a Maven template for Wowza Streaming Server projects.
 
 It is originally used for development of Wowza agent for https://wmspanel.com/.
 
@@ -24,3 +26,14 @@ This template is released under GPLv3 license: http://www.gnu.org/licenses/gpl.h
 
 
 This template is used for developing Wowza Media Server agent for WMSPanel - the admin control and reporting panel for Wowza Media Server: https://wmspanel.com/
+
+
+**Usage**
+
+Follow these instructions to begin using this template as the basis for your Wowza Streaming Server project.
+
+* Edit ```pom.xml``` and replace the ```wms.installpath``` property with the full path to your local Wowza Streaming Engine installation directory. The default OSX path is provided herein.
+* Run ```mvn validate``` to install any dependencies to your local Maven cache
+	* This must be performed each time a new local dependency is provided 
+* Run ```mvn package``` to build the deployable JAR file
+* Run ```mvn clean install``` to build and deploy the JAR file into your local Wowza installation 
