@@ -1,7 +1,7 @@
 Wowza Maven Template
 ====================
 
-This is a Maven template for Wowza Media Server projects.
+This is a Maven template for Wowza Media Server and Wowza Streaming Engine projects.
 
 It is originally used for development of Wowza agent for https://wmspanel.com/.
 
@@ -17,10 +17,7 @@ When we started working on Wowza agent for WMSPanel we found that Wowza IDE is v
 
 This is why it as decided to make Maven template. Original creator is Alex Pokotilo.
 
-Please find more details here: http://blog.wmspanel.com/2011/10/maven-template-for-wowza.html
-
-This template is released under GPLv3 license: http://www.gnu.org/licenses/gpl.html
+You can find more details here: http://wmsauth.blogspot.com/2011/10/maven-template-for-wowza.html
 
 
-
-This template is used for developing Wowza Media Server agent for WMSPanel - the admin control and reporting panel for Wowza Media Server: https://wmspanel.com/
+This product is released under MIT license.
